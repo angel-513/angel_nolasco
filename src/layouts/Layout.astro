@@ -1,22 +1,30 @@
+---
+import "../styles/global.css"
+---
+
 <!doctype html>
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link href='https://unpkg.com/boxicons@2.1.4/dist/boxicons.js' rel='stylesheet'>
 		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
+		<title>Ángel Nolasco</title>
 	</head>
 	<body>
 		<slot />
 	</body>
+	<script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
 </html>
 
 <style>
-	html,
-	body {
+	html, body {
 		margin: 0;
+		padding: 2px;
 		width: 100%;
 		height: 100%;
+		color: #FFF;
+		background-color: #241B35;
 	}
 </style>

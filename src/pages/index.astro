@@ -1,11 +1,43 @@
 ---
-import Welcome from '../components/Welcome.astro';
+import Photo from '../../public/img/foto-sin-fondo.png'
 import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import Navbar from '../components/Navbar.astro';
+import { Image } from 'astro:assets';
+import TechSkillCard from '../components/TechSkillCard.astro';
+import { socialIcons, cards, skills } from '../content/info';
+import SocialLinks from '../components/SocialLinks.astro';
 ---
 
 <Layout>
-	<Welcome />
+	<Navbar />
+
+	<main class="flex items-center justify-center flex-col md:flex-row gap-10 my-2 mx-10 md:mx-35 p-10 bg-[#342A45] rounded-xl">
+		<Image src={Photo} alt="Foto de Ángel Nolasco" width={300} height={300} />
+		<div>
+			<h1 class="mb-2"><span class="text-[#A364FF] font-extrabold text-5xl">Ángel </span><span class="text-[#FFC7FF] font-extrabold text-5xl">Nolasco</span></h1>
+			<p class="text-[#CB80FF] text-2xl font-semibold mb-2">Ingeniero en Sistemas</p>
+			<p class="text-lg mb-3 mt-1">Como desarrollador mi fortaleza está en el <span class="text-[#CB80FF]">backend</span> y gestión de <span class="text-[#CB80FF]">bases de datos</span>. Mi enfoque está en crear soluciones de software escalables y seguras que se adapten a las <span class="text-[#CB80FF]">necesidades del negocio</span> y contribuyan a la eficiencia operacional de las organizaciones. Creo en el <span class="text-[#CB80FF]">trabajo en equipo</span> como para el desarrollo de proyectos innovadores y de alto impacto.</p>
+			{
+				socialIcons.map( icon => (
+					<SocialLinks icon={icon.icon} url={icon.url} />
+				))
+			}
+		</div>
+	</main>
+
+	{
+		cards.map( card => (
+			<section class="flex  justify-center flex-col gap-4 my-4 mx-10 md:mx-35 p-10 bg-[#342A45] rounded-xl">
+				<h1 class="text-[#FFC7FF] font-extrabold text-4xl">{card.title}</h1>
+				<p set:html={card.description} class="text-lg"></p>
+			</section>
+		))
+	}
+
+	<div class="flex  justify-center flex-col gap-4 my-4 mx-10 md:mx-35 p-10 bg-[#342A45] rounded-xl">
+		<h1 class="text-[#FFC7FF] font-extrabold text-4xl">Habilidades Tecnicas</h1>
+		{
+			<TechSkillCard skills={skills} />
+		}
+	</div>
 </Layout>

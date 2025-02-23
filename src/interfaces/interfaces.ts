@@ -1,7 +1,7 @@
 export interface SocialProps {
     name: string;
-    icon: string;
     url: string;
+    icon: string;
 }
 
 export interface AboutCardProps {
@@ -9,7 +9,7 @@ export interface AboutCardProps {
     description: string;
 }
 
-interface Skill {
+export interface Skill {
     name: string;
     level: number;
     img: string;
@@ -17,10 +17,4 @@ interface Skill {
 
 export interface Skills {
     [category: string]: Skill[];
-}
-
-export interface NavbarTab {
-    title: string;
-    href: string;
-    subtabs?: NavbarTab[];
 }

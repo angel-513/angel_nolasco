@@ -1,0 +1,23 @@
+---
+import type { Skills } from "../interfaces/interfaces";
+import SkillElement from "./SkillElement.astro";
+
+interface Props {
+    skills: Skills;
+}
+
+const { skills } = Astro.props;
+---
+
+<div class="bg-[#241B35] flex flex-col gap-8 my-2 md:mx-10 p-5 rounded-md">
+    {
+        Object.entries(skills).map(([category, items]) => (
+            <div class="w-full flex justify-center flex-col mb-2">
+                <h2 class="text-[#A364FF] text-2xl font-semibold mb-1">{category}</h2>
+                {items.map(item => 
+                    <SkillElement img={item.img} name={item.name} level={item.level} />
+                )}
+            </div>
+        ))
+    }
+</div>

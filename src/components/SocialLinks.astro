@@ -1,0 +1,8 @@
+---
+import type { SocialProps } from "../interfaces/interfaces";
+const { name, url, icon } = Astro.props as SocialProps;
+---
+
+<a href={url} target="_blank" rel="noopener noreferrer" class="py-2">
+    <box-icon type='logo' name={icon} color="white" size="lg"></box-icon>
+</a>
