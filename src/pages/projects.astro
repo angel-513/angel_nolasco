@@ -1,0 +1,22 @@
+---
+import Layout from "../layouts/Layout.astro";
+import ProjectCard from "../components/ProjectCard.astro";
+import { getCollection, type CollectionEntry } from "astro:content";
+
+type Project = CollectionEntry<'projects'> & { slug: string };
+
+const projects: Project[] = await getCollection('projects') as Project[];
+---
+
+<Layout title="Proyectos - Ángel Nolasco">
+    <div class="flex justify-center flex-col gap-8 my-4 mx-10 md:mx-35 p-10 bg-[#342A45] rounded-xl">
+		<h1 class="text-[#FFC7FF] font-extrabold text-4xl">Proyectos</h1>
+        <div class="w-full flex flex-row gap-3">
+            {
+                projects.map(project => (
+                    <ProjectCard href={`/projects/${project.slug}`} title={project.data.title} img={project.data.img} description={project.data.description}/>
+                ))
+            }
+        </div>
+	</div>
+</Layout>

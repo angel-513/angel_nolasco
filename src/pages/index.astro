@@ -1,7 +1,6 @@
 ---
 import Photo from '../../public/img/foto-sin-fondo.png'
 import Layout from '../layouts/Layout.astro';
-import Navbar from '../components/Navbar.astro';
 import { Image } from 'astro:assets';
 import TechSkillCard from '../components/TechSkillCard.astro';
 import { socialIcons, cards, skills } from '../content/info';
@@ -9,9 +8,7 @@ import SocialLinks from '../components/SocialLinks.astro';
 ---
 
 <Layout>
-	<Navbar />
-
-	<main class="flex items-center justify-center flex-col md:flex-row gap-10 my-2 mx-10 md:mx-35 p-10 bg-[#342A45] rounded-xl">
+	<main id="AboutMe" class="flex items-center justify-center flex-col md:flex-row gap-10 my-2 mx-10 md:mx-35 p-10 bg-[#342A45] rounded-xl">
 		<Image src={Photo} alt="Foto de Ángel Nolasco" width={300} height={300} />
 		<div>
 			<h1 class="mb-2"><span class="text-[#A364FF] font-extrabold text-5xl">Ángel </span><span class="text-[#FFC7FF] font-extrabold text-5xl">Nolasco</span></h1>
@@ -34,7 +31,7 @@ import SocialLinks from '../components/SocialLinks.astro';
 		))
 	}
 
-	<div class="flex  justify-center flex-col gap-4 my-4 mx-10 md:mx-35 p-10 bg-[#342A45] rounded-xl">
+	<div id="TecSkills" class="flex  justify-center flex-col gap-4 my-4 mx-10 md:mx-35 p-10 bg-[#342A45] rounded-xl">
 		<h1 class="text-[#FFC7FF] font-extrabold text-4xl">Habilidades Tecnicas</h1>
 		{
 			<TechSkillCard skills={skills} />

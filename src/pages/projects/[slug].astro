@@ -1,0 +1,51 @@
+---
+import type { GetStaticPaths } from "astro";
+import Layout from "../../layouts/Layout.astro"
+import { getCollection, type CollectionEntry } from "astro:content";
+
+
+type Project = CollectionEntry<"projects"> & {
+    render: () => Promise<{ Content: any; headings: any[] }>;
+} & { slug: string };
+
+export async function getStaticPaths() {
+    const projectEntries: Project[] = await getCollection("projects");
+    return projectEntries.map(entry => ({
+        params: { slug: entry.slug }, props: { entry }
+    }));
+}
+
+interface Props {
+    entry: Project;
+}
+
+const { entry } = Astro.props;
+const { Content, headings } = await entry.render();
+---
+
+<Layout title={`${entry.data.title} - Angel Nolasco`}>
+    <div class="flex justify-center flex-col gap-3 my-4 mx-10 md:mx-35 p-10">
+        <h1 class="text-4xl font-extrabold text-[#A364FF]">{entry.data.title}</h1>
+        <span class="font-semibold text-[#FFC7FF] text-2xl">{entry.data.description}</span>
+        <img src={entry.data.img} alt={entry.data.title} class="rounded-lg">
+        <div>
+            <h2 class="font-regular text-[#FFC7FF] text-xl rounded-lg">Tabla de Contenido</h2>
+            <ul class="list-disc list-inside">
+                {
+                    headings.map((heading: any) => (
+                        <li class={`toc-level-${heading.depth} ml-${(heading.depth - 1) * 4}`}>
+                            <a href={`#${heading.slug}`} class="">
+                                {heading.text}
+                            </a>
+                        </li>
+                    ))
+                }
+            </ul>
+        </div>
+    
+        <article class="prose dark:prose-invert prose-lg md:prose-xl max-w-none">
+            <Content />
+        </article>
+    </div>
+</Layout>
+

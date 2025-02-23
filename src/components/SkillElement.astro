@@ -11,8 +11,6 @@ const { img, name, level } = Astro.props as Skill;
 const int: number = Math.floor(level);
 const dec: number = (level%int)*100;
 const empty: number = 4 - int;
-
-const classDec: string = "h-full w-"+dec+"/100 bg-[#CB80FF] rounded-xl";
 ---
 
 <div class="w-full mb-3">
@@ -27,7 +25,7 @@ const classDec: string = "h-full w-"+dec+"/100 bg-[#CB80FF] rounded-xl";
             ))
         }
         <div class="h-3 w-1/5 mr-1 flex flex-row bg-[#E0E0E0] rounded-2xl">
-            <div class={classDec}></div>
+            <div class={`h-full w-${dec}/100 bg-[#CB80FF] rounded-xl`}></div>
         </div>
         {
             Array.from({ length: empty }).map((_, index) => (
