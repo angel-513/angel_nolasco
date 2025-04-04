@@ -1,0 +1,64 @@
+---
+title: "Infraestructura de E-Commerce en Azure"
+description: "Definición de infraestructura para un e-commerce que recibe tráfico muy alto. Infraestructura levantada en Azure mediante Terraform."
+mainTechnologies: "Terraform"
+img: "/img/projects/terraform-ecommerce/website.png"
+---
+
+### Descripción
+Este proyecto consistió en el diseño, despliegue e implementación de una infraestructura en la nube utilizando Microsoft Azure mediante Terraform, con el objetivo de soportar una plataforma de comercio electrónico moderna, escalable y flexible. El enfoque principal fue satisfacer los requerimientos técnicos de una organización dedicada al comercio en línea que buscaba evolucionar su arquitectura tecnológica para mejorar su disponibilidad, rendimiento, facilidad de mantenimiento y escalabilidad futura.
+
+**Escenario:**
+La organización planteó una serie de requerimientos para la modernización de su infraestructura tecnológica. El sistema debía:
+* Servir contenido estático de forma rápida y eficiente.
+* Implementar dos aplicaciones web independientes, una de cara al cliente (pública) y otra para gestión interna (administrativa).
+* Ejecutar tareas en segundo plano para operaciones asincrónicas como procesamiento de datos o envío de notificaciones.
+* Contar con almacenamiento persistente para archivos generados o subidos por los usuarios.
+* Optimizar el acceso a información recurrente mediante un sistema de cacheo o consultas rápidas.
+
+#### Responsabilidades y aportes personales:
+Mi participación dentro del proyecto abarcó el diseño técnico y la implementación directa de múltiples componentes críticos de la solución. Entre las tareas más relevantes que ejecuté se encuentran:
+* Levantamiento de los **servidores web** mediante recursos de Azure que alojan tanto la aplicación del cliente como la interfaz administrativa.
+* Despliegue del **sitio web estático**, utilizando servicios adecuados de Azure para alojar y servir contenido estático con alta disponibilidad y baja latencia.
+* Implementación y configuración de dos instancias de **Azure Web Apps**, una orientada a los usuarios finales (clientes) y otra para el personal administrativo de la organización, garantizando el aislamiento adecuado y la configuración de entornos independientes.
+* Configuración de **Azure Container Registry (ACR)** para alojar y administrar las imágenes de contenedor correspondientes a ambas aplicaciones web, facilitando así una integración fluida con las Web Apps y permitiendo un modelo de despliegue continuo.
+
+### Justificación de recursos utilizados
+#### Azure App Services
+En el apartado de las aplicaciones web hemos decidido usar Azure App Service porque es una solución optimizada para alojar aplicaciones web, tanto de front-end como de back-end, con soporte para múltiples lenguajes y frameworks, lo que nos permite flexibilidad en la elección del stack tecnológico según las necesidades del negocio. Además, Azure App Service ofrece diferentes tiers de escalabilidad, lo que permite ajustar los recursos conforme el e-commerce crezca.
+
+Dado los requerimientos técnicos, hemos decidido estructurar la infraestructura en tres App Services de la siguiente manera:
+1. Aplicación administrativa (Back Office)
+        ![UI administrativa](/img/projects/terraform-ecommerce/uibackoffice.png)
+        ![API administrativa](/img/projects/terraform-ecommerce/apibackoffice.png)
+        Esta se alojará en un solo App Service, donde convivirán tanto la interfaz gráfica como la API de administración. Esto debido a que la carga administrativa no es muy alta y la cantidad de usuarios concurrentes es reducida. Asimismo, la interfaz administrativa no requiere una alta carga gráfica, ya que está enfocada en funcionalidad, lo que permite alojarla junto con su API sin comprometer el rendimiento.
+2. Aplicación para clientes (Front Office)
+
+    - Front-end (UI interactiva)
+        ![UI Clientes](/img/projects/terraform-ecommerce/uifrontoffice.png)
+        Se alojará en un App Service independiente, ya que se espera un gran número de peticiones (visitas) y debe mantenerse disponible con un alto nivel de rendimiento. Además, dado que es un e-commerce, prácticas de desarrollo como el Server Site Rendering suelen ser recomendadas para mejorar la experiencia de usuario, y esta práctica requiere mayor poder de cómputo que, por ejemplo, Single Page Application.
+
+    - Back-end (API de clientes)
+        ![API Clientes](/img/projects/terraform-ecommerce/apifrontoffice.png)
+        Se alojará en un tercer App Service, ya que manejará las transacciones, peticiones de productos y pagos, lo que implica una carga de procesamiento mayor. Al separar la API en un servicio aparte permite escalar el back-end de manera independiente, en caso de que se requiera más capacidad de cómputo para procesar peticiones sin afectar el rendimiento del front-end.
+
+#### Static Web App
+![Web Site](/img/projects/terraform-ecommerce/website.png)
+Para el contenido estático que el negocio quiere proveer a sus clientes, se ha decidido utilizar Azure Static Web App. Esta decisión fue tomada principalmente debido al coste de los recursos desplegados, ya que resulta más económico ofrecer contenido estático en Static Web App en comparación con App Service. Además, Azure Static Web App ofrece una infraestructura optimizada específicamente para aplicaciones web estáticas, lo que mejora significativamente el rendimiento, especialmente para sitios de e-commerce con grandes cantidades de tráfico. 
+El servicio también tiene la ventaja de ofrecer un sistema de integración continua mediante GitHub Actions o Azure DevOps, lo que facilita y automatiza el proceso de despliegue y actualización del contenido estático. La facilidad de configuración de estas herramientas reduce el tiempo de desarrollo y mantenimiento.
+
+Una de las grandes ventajas de Static Web App es su escalabilidad automática, permitiendo que la infraestructura se ajuste sin intervención manual a media que el tráfico de la web crece, asegurando siempre tiempos de respuesta rápidos y una experiencia de usuario óptima. Esto es particularmente útil en un entorno de e-commerce, donde los picos de tráfico pueden ser impredecibles.
+
+Además, el servicio ofrece soporte para HTTPS, garantizando que las conexiones sean seguras, lo cual es esencial para el negocio y para la confianza del cliente, especialmente en un entorno de compras online. También, al estar integrado con Azure CDN, el contenido estático se entrega de manera eficiente a nivel global, asegurando un rendimiento rápido sin importar la ubicación del usuario.
+
+#### Azure Container Registry
+En el diseño de la infraestructura consideramos también el uso de Azure Container Registry como solución para almacenar y administrar las imágenes de contenedores utilizadas en nuestras aplicaciones.
+
+El ACR nos permite mantener todas las imágenes de nuestros contenedores en un único repositorio privado y seguro, facilitando la administración y despliegue de nuestras aplicaciones, y a su vez mejora la seguridad y el control de acceso. Asimismo, dado que hacemos uso de Azure App Services, se facilita la integración con este tipo de recurso facilitando el despliegue de contenedores directamente en estos servicios, además de permitir el manejo de versiones evitando problemas de compatibilidad o versiones mal programadas.
+ACR es un recurso que ofrece diferentes tiers de servicio (Basic, Standar y Premium), lo que ayuda a escalar la capacidad de almacenamiento y rendimiento según las necesidades del negocio.
+
+### Enlaces
+- [Repositorio de recursos de almacenamiento](https://github.com/Jey1601/IS912-Terraform-A)
+- [Repositorio de recursos web](https://github.com/angel-513/IS912-Terraform-B)
+- [Repositorio del configuración final de las aplicaciones, la conexión con la base de 
+datos relacional y la capa de caché](https://github.com/ajosemoya/E-commerce-Terraform-C)
