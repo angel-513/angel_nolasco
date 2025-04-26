@@ -1,0 +1,80 @@
+---
+title: "Aplicación para Generación de Reportes"
+description: "Diseño, implementación y despliegue de una infraestructura escalable utilizando servicios en la nube de Microsoft Azure."
+mainTechnologies: "NextJS, FastAPI, Azure Resources, Docker, Terraform"
+img: "/img/projects/pokequeue/ui.png"
+---
+
+### Descripción
+
+El proyecto consistió en el diseño, implementación y despliegue de una infraestructura escalable utilizando servicios en la nube de Microsoft Azure. La solución se estructuró en cuatro componentes principales: una API desarrollada con FastAPI, una interfaz de usuario web desplegada mediante Azure App Service, una base de datos SQL gestionada en Azure SQL Database, y una Azure Function destinada a la generación asíncrona de reportes.
+
+El objetivo principal del sistema es permitir a los usuarios generar reportes en formato CSV basados en información obtenida dinámicamente desde una API externa (PokéAPI). Para ello, la Function App se encarga de orquestar el consumo de datos y la creación del archivo, manteniendo la arquitectura desacoplada y orientada a servicios.
+
+El proyecto fue desarrollado con el propósito de demostrar habilidades en la mejora, adaptación y extensión de funcionalidades de un sistema previamente definido, asegurando su correcto funcionamiento continuo en un entorno de producción desplegado en la nube.
+
+### Arquitectura implementada
+
+La arquitectura de la solución se compone de cuatro componentes principales desplegados en servicios gestionados de Azure: la API, la interfaz de usuario (UI), la base de datos y una función serverless. Cada uno de estos elementos se encuentra desplegado y orquestado dentro de un entorno en la nube.
+
+Tanto la API como la UI están implementadas como instancias independientes de Azure Web App, hospedadas en un App Service Plan común. Ambas aplicaciones se construyen a partir de imágenes Docker personalizadas almacenadas en Azure Container Registry, lo que permite control total sobre los entornos de ejecución y facilita la portabilidad y despliegue.
+
+El componente de procesamiento asíncrono está gestionado mediante una Azure Function, también desplegada dentro del mismo App Service Plan, configurada con un Queue Trigger para su activación automática. Esta función actúa como consumidor de una cola de mensajes que representa solicitudes de generación de reportes.
+
+Para el almacenamiento, se implementó un Azure Storage Account que contiene dos servicios clave:
+- Blob Storage: utilizado para almacenar los reportes generados en formato CSV.
+- Queue Storage: utilizado para encolar las solicitudes de generación de reportes.
+
+Cuando un usuario solicita un nuevo reporte desde la UI, se envía un mensaje a la cola. Esto desencadena la ejecución de la Function App, la cual consulta la PokéAPI, procesa los datos, genera el archivo CSV y lo almacena en el Blob Storage. La UI posteriormente genera un token de acceso temporal (SAS token) para permitir la descarga segura del archivo.
+
+Finalmente, todas las solicitudes de generación de reportes son registradas en una tabla persistente alojada en una instancia de Azure SQL Database.
+
+![Infraestructura](/img/projects/pokequeue/pokequeue.png)
+
+### Tecnologías clave
+
+1. NextJS
+2. FastAPI
+3. App Service Plan de Azure
+4. Azure Functions
+5. Azure SQL Database
+6. Blob Storage
+7. Queue Storage
+8. Terraform
+9. Docker
+10. API externa (PokeAPI)
+
+### Aportaciones a la aplicación
+
+Como parte de la evolución funcional del sistema, el proyecto contempló la incorporación de tres nuevas características:
+1. Implementación de la eliminación completa de reportes.
+2. Enriquecimiento de los reportes con información adicional sobre los Pokémon.
+3. Generación de reportes basados en muestreo aleatorio de registros.
+
+Mi participación se centró en la tercera funcionalidad, orientada a permitir que los usuarios generen reportes con muestras seleccionadas aleatoriamente. Para ello, realicé las siguientes tareas técnicas:
+- Ampliación del modelo de datos: Se añadió un nuevo campo a la tabla de solicitudes en Azure SQL Database para almacenar la cantidad de registros requeridos por el usuario en cada solicitud de muestreo.
+
+- Modificación de la Azure Function: Se integró una lógica de selección aleatoria dentro del flujo de generación de reportes. Esta lógica se ejecuta después de la recuperación de datos desde la PokéAPI, y filtra aleatoriamente el conjunto de resultados en función del número solicitado por el usuario.
+
+### Desafíos y resolución
+
+Durante el proceso de desarrollo y despliegue, se presentaron diversos desafíos asociados principalmente a la configuración y orquestación de los servicios en Azure. Entre los más relevantes se destacan:
+
+- Gestión de rutas y puntos de acceso: Se presentaron conflictos en las rutas expuestas por las Web Apps debido a discrepancias entre la configuración del entorno local y el entorno en la nube. La solución implicó una revisión detallada de las rutas, así como el ajuste de las configuraciones de puertos definidos en las imágenes Docker.
+
+- Configuración de variables de entorno: Se detectaron fallos en tiempo de ejecución por valores mal definidos o ausentes en las variables de entorno. Se resolvió mediante la implementación de validaciones explícitas en el código, documentación de las variables requeridas, y el uso del portal de Azure para su correcta administración.
+
+- Depuración y trazabilidad: Para abordar estos problemas de forma efectiva, se fortaleció el sistema de logging dentro de la API, permitiendo identificar rápidamente errores en producción y agilizar los procesos de corrección.
+
+Estas experiencias fortalecieron mi capacidad para diagnosticar y resolver problemas en entornos cloud, así como para mejorar la resiliencia y mantenibilidad de aplicaciones distribuidas.
+
+### Enlaces de repositorios
+- Repositorio API: https://github.com/Evolucion-del-Generador-de-Reportes/poke.queue.api
+- Repositorio Function App de Azure: https://github.com/Evolucion-del-Generador-de-Reportes/poke.queue.function
+- Repositorio UI: https://github.com/Evolucion-del-Generador-de-Reportes/poke.queue.ui
+- Repositorio Scripts SQL: https://github.com/Evolucion-del-Generador-de-Reportes/poke.queue.sql
+- Repositorio de Terraform: https://github.com/Evolucion-del-Generador-de-Reportes/poke.terraform
+
+### URL UI y API
+- Link UI: https://ui-projectqueue-dev.azurewebsites.net
+- Link API: https://api-projectqueue-dev.azurewebsites.net
