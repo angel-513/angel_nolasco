@@ -22,9 +22,9 @@ export const cards: AboutCardProps[] = [
 
 export const skills: Skills = {
     'Backend': [
-        { name: 'NodeJS', level: 3.5, 
+        { name: 'NodeJS', level: 3, 
             img: 'img/nodejs.svg' },
-        { name: 'PHP', level: 3.5 , 
+        { name: 'PHP', level: 3, 
             img: 'img/php.png' },
         { name: 'TypeScript', level: 3, 
             img: 'img/typescript.png' },
@@ -48,7 +48,7 @@ export const skills: Skills = {
     'AI y Ciencia de datos': [
         { name: 'Python', level: 4, 
             img: 'img/python.png' },
-        { name: 'Pytorhc', level: 3.5, 
+        { name: 'Pytorch', level: 3, 
             img: 'img/pytorch.png' },
         { name: 'Numpy', level: 2, 
             img: 'img/numpy.png' },
@@ -61,7 +61,15 @@ export const skills: Skills = {
         { name: 'MySQL', level: 3,
             img: 'img/mysql.png'
         },
-        { name: 'MongoDB', level: 2.5, 
+        { name: 'MongoDB', level: 2, 
             img: 'img/mongodb.png' }
+    ],
+    'Infraestructura y Cloud': [
+        { name: 'Terraform', level: 3,
+            img: 'img/terraform.svg' },
+        { name: 'Docker', level: 3, 
+            img: 'img/docker.png' },
+        { name: 'Azure', level: 2, 
+            img:'img/azure.svg' }
     ]
 }
